@@ -5,11 +5,9 @@ package kr.co.sibal.entity;
  */
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Data
 @Entity

@@ -24,7 +24,7 @@ public class HelloController {
     @RequestMapping("/greeting/{id}")
     public String greeting(@PathVariable(value = "id", required = false) long id, Model model) {
         model.addAttribute("id", id);
-        //model.addAttribute("cart", cartService.getCart(id));
+        //model.addAttribute("entity", cartService.getCart(id));
         return "greeting";
     }
 }
