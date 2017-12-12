@@ -1,4 +1,4 @@
-package kr.co.sibal.hibernate.entity;
+package kr.co.sibal.entity;
 
 /**
  * Created by pjh on 2017-12-07.
