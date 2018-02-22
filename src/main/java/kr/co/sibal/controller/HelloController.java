@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by pjh on 2017-11-28.
@@ -25,6 +24,12 @@ public class HelloController {
     public String greeting(@PathVariable(value = "id", required = false) long id, Model model) {
         model.addAttribute("id", id);
         //model.addAttribute("entity", cartService.getCart(id));
+        log.trace("trace");
+        log.debug("debug");
+        log.info("info");
+        log.warn("warn");
+        log.error("error");
+
         return "greeting";
     }
 }

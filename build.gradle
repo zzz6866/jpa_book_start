@@ -22,6 +22,8 @@ repositories {
 
 
 dependencies {
+    def queryDSL = '4.1.4'
+
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     runtime('org.springframework.boot:spring-boot-devtools')
@@ -45,6 +47,12 @@ dependencies {
     /* logback-classic */
     compile(group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.8')
     testCompile(group: 'junit', name: 'junit', version: '4.11')
+
+    /* queryDSL */
+    compile group: 'com.querydsl', name: 'querydsl-core', version:"$queryDSL"
+    compile group: 'com.querydsl', name: 'querydsl-jpa', version:"$queryDSL"
+    /*compile group: 'com.querydsl', name: 'querydsl-sql', version:"$queryDSL"*/
+    compile group: 'com.querydsl', name: 'querydsl-apt', version:"$queryDSL"
 }
 
 apply plugin: 'idea'
@@ -55,3 +63,49 @@ idea {
         outputDir = file("$buildDir/classes/main/")
     }
 }
+
+/* queryDSL Q class path */
+def queryDslOutput = file("src/main/generated")
+
+sourceSets {
+    main {
+        java {
+            srcDir "src/main/generated"
+        }
+    }
+}
+
+/* Q class generated */
+task generateQueryDSL(type: JavaCompile, group: 'build') {
+    doFirst {
+        if (!queryDslOutput.exists()) {
+            logger.info("Creating `$queryDslOutput` directory")
+
+            if (!queryDslOutput.mkdirs()) {
+                throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
+            }
+        }
+    }
+
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor",
+            "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = queryDslOutput
+}
+
+/* queryDSL compile */
+compileJava.dependsOn(generateQueryDSL)
+
+/* queryDSL clean */
+clean {
+    delete queryDslOutput
+}
+
+/*
+springBoot {
+    mainClass = "kr.co.sibal.SpringBootWebApplication"
+}*/

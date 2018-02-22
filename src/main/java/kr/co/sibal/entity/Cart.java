@@ -14,7 +14,7 @@ import javax.persistence.Id;
 public class Cart {
 
     @Id
-    Integer id;
+    Long id;
 
     String title;
 }
